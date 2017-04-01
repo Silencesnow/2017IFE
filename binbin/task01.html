@@ -9,7 +9,12 @@
 <div>您输入的值是：<span id="aqi-display">尚无录入</span></div>
 <script type="text/javascript">
 	(function(){
-
+		var btn = document.getElementById('button');
+		// 添加事件
+ 		btn.onclick=function(){
+ 		var  text=document.getElementById("aqi-input").value;
+		document.getElementById("aqi-display").innerHTML=text;	
+	};		
 	})();
 </script>
 
