@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task04</title>
+	<style>
+	#numout{
+		padding: 0;
+
+	}
+	#numout li{
+		display: inline-block;
+		font-size: 10px;
+		padding:10px;
+		margin:5px;
+		color:white;
+		background-color:red;
+	}
+	</style>
+	
+</head>
+<body>
+<input id="input" type="text">
+<button id="left_in">左侧入</button>
+<button id="right_in">左侧出</button>
+<button id="left_out">右侧入</button>
+<button id="right_out">右侧出</button>
+<ul id="numout">
+	<!-- 此处为数字 -->
+	
+</ul>
+<script>
+// 输入验证
+function input_validata(){
+	var n=document.getElementById('input').value;	
+	if(Number(n)){
+		li=document.createElement("li");
+		li.innerHTML=n;
+		return li;
+	}else{
+		alert("输入内容不是数字");
+		return ;
+
+	}
+};
+var btn=document.getElementsByTagName("button");	
+// 初始化获取数据
+function init(){	
+	ul=document.getElementById("numout");	
+	return ul;
+}
+// 绑定事件	
+btn[0].onclick=function(){	
+var a=init();
+var b=input_validata();
+left_in(b,a);		
+}
+btn[1].onclick=function(){		
+var a=init();
+left_out(a);			
+}
+btn[2].onclick=function(){	
+var a=init();
+var b=input_validata();
+right_in(b,a);		
+}
+btn[3].onclick=function(){	
+var a=init();
+right_out(a);		
+}
+
+
+// 左侧入
+function left_in(li,ul){
+	if(li){
+	ul.insertBefore(li,ul.childNodes[0]);
+	}
+}
+// 右侧入
+function right_in(li,ul){
+	if(li){
+	ul.appendChild(li);
+	}
+}	
+// 左侧出
+function left_out(ul){
+	ul.removeChild(ul.childNodes[0]);
+}
+// 右侧出
+function right_out(ul){
+	ul.removeChild(ul.lastChild);
+}
+
+</script>	
+</body>
+</html>
