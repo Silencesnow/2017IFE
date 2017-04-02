@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task05</title>
+	<style>
+	ul{
+		padding: 0;
+		display:flex;
+		align-items: flex-end;
+		list-style: none;
+	}
+	ul li{				
+		width:20px;
+		margin:5px;
+		background-color:red;
+	}
+	</style>
+	
+</head>
+<body>
+<input id="input" type="text">
+<button id="left_in">左侧入</button>
+<button id="right_in">左侧出</button>
+<button id="left_out">右侧入</button>
+<button id="right_out">右侧出</button>
+<button id="btn_s">从小到大排序</button>
+<button id="btn_l">从大到小排序</button>
+<ul id="numout">
+	<!-- 此处为数字 -->
+</ul>	
+<ul id="s"></ul>
+<ul id="l"></ul>
+
+<script>
+// 输入验证
+function input_validata(){
+	var n=document.getElementById('input').value;
+	var i=document.getElementById("numout").getElementsByTagName("li").length;	
+	if(Number(n)&&(i<60)&&(n>=10)&&(n<=100)){		
+		li=document.createElement("li");
+		li.style.height=n+'px';
+		return li;
+	}else{
+		if(i>59){
+			alert("数字已经超过60个");
+		}else{
+		alert("请输入数字并且在10-100之间");
+		}
+	}
+};
+var btn=document.getElementsByTagName("button");	
+// 初始化获取数据
+function init(){	
+	ul=document.getElementById("numout");	
+	return ul;
+}
+// 绑定事件	
+btn[0].onclick=function(){	
+var a=init();
+var b=input_validata();
+left_in(b,a);	
+}
+btn[1].onclick=function(){		
+var a=init();
+left_out(a);			
+}
+btn[2].onclick=function(){	
+var a=init();
+var b=input_validata();
+right_in(b,a);		
+}
+btn[3].onclick=function(){	
+var a=init();
+right_out(a);		
+}
+
+// 左侧入
+function left_in(li,ul){
+	if(li){
+	ul.insertBefore(li,ul.childNodes[0]);
+	}
+}
+// 右侧入
+function right_in(li,ul){
+	if(li){
+	ul.appendChild(li);
+	}
+}	
+// 左侧出
+function left_out(ul){
+	ul.removeChild(ul.childNodes[0]);
+}
+// 右侧出
+function right_out(ul){
+	ul.removeChild(ul.lastChild);
+}
+
+// 列表排序-从小到大
+var btn_s=document.getElementById("btn_s");
+var btn_l=document.getElementById("btn_l");
+btn_s.onclick=function(){
+	var ul_s=document.getElementById("s");	
+	var arr1=btn_init(ul_s);
+
+	// 排序
+	var stl=arr1[1].sort(function(a,b){
+	return (a.clientHeight-b.clientHeight);
+	});	
+	ul_append(arr1[0],stl);	
+};
+// 列表排序-从大到小
+btn_l.onclick=function(l){
+	var ul_l=document.getElementById("l");
+	var arr2=btn_init(ul_l);
+	var lts=arr2[1].sort(function(a,b){
+		return (b.clientHeight-a.clientHeight);
+	});
+	ul_append(arr2[0],lts);
+	}
+
+// 排序前的初始化
+function btn_init(ul){
+	var lis_s=init().getElementsByTagName("li");		
+	// 清理旧列表		
+	if(ul.childNodes.length){
+		var len=ul.childNodes.length;
+		for(var i=0;i<len;i++){
+			ul.removeChild(ul.childNodes[0]);
+		}
+	}
+	var array=[];
+	array=Array.prototype.slice.call(lis_s,0);
+	return [ul,array];
+};
+// 应用列表
+function ul_append(ul,stl){
+	for(var j in stl){
+		var li=stl[j].cloneNode(true);
+		ul.appendChild(li);
+	}
+}
+</script>	
+</body>
+</html>
