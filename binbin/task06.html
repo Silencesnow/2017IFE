@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task06</title>
+	<style>
+	div{
+		border:1px black solid;
+		width:160px;
+	}
+	</style>
+	
+</head>
+<body>
+<textarea id="input"></textarea>
+<button id="submit">提交</button>
+<br>
+输入内容如下：
+<div><p id="output"></p></div>
+<input type="text" id="search">
+<button id="btn_search">搜索</button>
+
+<script>
+var btn_sub=document.getElementById('submit');
+var btn_sea=document.getElementById('btn_search');
+var p,text,output,a,c;
+// 绑定提交事件
+btn_sub.onclick=function(){
+	p=document.getElementById('input').value;
+	var d=document.createTextNode(p+' ');
+	document.getElementById('output').appendChild(d);
+}
+// 绑定搜索事件
+btn_sea.onclick=function(){
+	output=document.getElementById('output');
+	output.normalize();	
+	a=document.getElementById('search').value;
+	search(a,output);
+}
+// 序列化
+function search(a,output){
+	var b=[],arr=[];
+	var d;
+	for(var i=0;i<output.childNodes.length;i++){
+		if(output.childNodes[i].nodeType==3){
+			text=output.childNodes[i].nodeValue;
+			output.removeChild(output.childNodes[i]);
+			arr=text.split(/[^\w]/);
+			for(var j=0;j<arr.length;j++){
+				d=document.createTextNode(arr[j]+' ');
+				c=document.createElement('span');
+				c.appendChild(d);
+				output.appendChild(c);
+			}
+		}
+		if(output.childNodes[i].childNodes[0].nodeValue.indexOf(a)>-1){
+			output.childNodes[i].style.color="red";
+		}else{
+			output.childNodes[i].style.color="black";
+		}
+	}		
+}
+</script>	
+</body>
+</html>
