@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task07</title>
+	<style>
+	div{
+		border: 1px black solid;
+		display: flex;
+		min-width: 15px;
+		min-height: 80px;
+		margin:5px;
+	}
+	div.show{
+		
+	}
+	</style>
+	
+</head>
+<body>
+<button id="front">前序遍历</button>
+<button id="center">中序遍历</button>
+<button id="back">后序遍历</button>
+<script>
+// 创建一棵深度为5的二叉树
+
+var j;
+var arr=[],n=[];
+var div_pa;
+div_pa=document.createElement('div');
+div_pa.style.width="600px";
+	arr=createTree(div_pa);
+	for(j=0;j<14;j++){
+		n.push(arr[0]);
+		n.push(arr[1]);
+		arr=createTree(n[j]);		
+	}
+document.body.appendChild(div_pa);
+
+function createTree(parents){
+	var le,ri;
+	le=document.createElement('div');
+	ri=document.createElement('div');
+	parents.appendChild(le);
+	parents.appendChild(ri);
+	return [le,ri];
+}
+
+// 前序遍历函数
+function frontIt(tree){
+	show(tree);
+	while(0!=tree.childNodes.length){
+	frontIt(tree.childNodes[0]);
+	frontIt(tree.childNodes[1]);
+	}
+}
+// 展示函数
+function show(div){
+	div.style.width+="5px";
+	div.style.height+="5px";
+	div.style.backgroundColor="red";
+}
+</script>	
+</body>
+</html>
