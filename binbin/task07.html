@@ -10,9 +10,16 @@
 		min-width: 15px;
 		min-height: 80px;
 		margin:5px;
+		background-color: white;
 	}
-	div.show{
-		
+	.show{
+		animation: mymove 3s infinite;
+		-webkit-animation: mymove 3s;
+
+	}
+	@keyframes mymove{
+		from{  }
+		to{ background-color: blue;  }
 	}
 	</style>
 	
@@ -24,9 +31,8 @@
 <script>
 // 创建一棵深度为5的二叉树
 
-var j;
-var arr=[],n=[];
-var div_pa;
+var j,div_pa,
+    arr=[],n=[];
 div_pa=document.createElement('div');
 div_pa.style.width="600px";
 	arr=createTree(div_pa);
@@ -47,19 +53,65 @@ function createTree(parents){
 }
 
 // 前序遍历函数
-function frontIt(tree){
-	show(tree);
-	while(0!=tree.childNodes.length){
-	frontIt(tree.childNodes[0]);
-	frontIt(tree.childNodes[1]);
+function frontIt(tree,ar){	
+	if(tree!==null){
+		ar.push(tree);
+	    frontIt(tree.firstElementChild,ar);
+	    frontIt(tree.lastElementChild,ar);
 	}
+	return ar;	
 }
-// 展示函数
-function show(div){
-	div.style.width+="5px";
-	div.style.height+="5px";
-	div.style.backgroundColor="red";
+// 中序遍历函数
+function centerIt(tree,ar){	
+	if(tree!==null){		
+	    centerIt(tree.firstElementChild,ar);
+	    ar.push(tree);
+	    centerIt(tree.lastElementChild,ar);
+	}
+	return ar;	
 }
+// 后序遍历函数
+function backIt(tree,ar){	
+	if(tree!==null){		
+	    backIt(tree.firstElementChild,ar);
+	    backIt(tree.lastElementChild,ar);
+	    ar.push(tree);
+	}
+	return ar;	
+}
+// 展示动画
+function show(ar){	
+	var i=0;
+	timer=setInterval(function(){
+		if(i<ar.length){
+			if(i>0){
+				ar[i-1].style.backgroundColor="white";
+			}
+			ar[i].style.backgroundColor="blue";			
+			i++;		
+		}else {
+		ar[i-1].style.backgroundColor="white";
+		clearInterval(timer)};
+	},500);		
+}
+
+var btn_f=document.getElementById("front");
+    btn_c=document.getElementById("center");
+    btn_b=document.getElementById("back");
+
+btn_f.onclick=function(){
+	let ar=frontIt(div_pa,[]);
+	show(ar);
+}
+btn_c.onclick=function(){
+	let ar=centerIt(div_pa,[]);
+	show(ar);
+}
+btn_b.onclick=function(){
+	let ar=backIt(div_pa,[]);
+	show(ar);
+}
+
 </script>	
 </body>
 </html>
