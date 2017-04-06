@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task-02</title>
+	<style>
+		body{
+			margin: 100px auto;
+			text-align: center;									
+		}
+		input{
+			border-radius: 5px;
+			border: 1px #ccc solid;
+			height: 30px;
+			margin: 10px;
+		}
+		span{
+			display: inline-block;
+			width: 100px;
+			text-align: right;
+		}
+		button{
+			border-radius: 5px;
+			border: 1px #ccc solid;
+			height: 32px;
+			background-color: #2f79ba;
+			color: #fff;			
+		}
+		#explain{
+			font-size: 10px;
+			color:#ccc;			
+		}
+		.num_null{
+			border:1px red solid;
+		}
+		.num_true{
+			border:1px green solid;
+		}
+	</style>
+</head>
+<body>
+<span>名称</span>
+<input type="text" id="input">
+<br>
+<span>密码</span>
+<input type="text" id="input">
+<br>
+<span>密码确认</span>
+<input type="text" id="input">
+<br>
+<span>邮箱</span>
+<input type="text" id="input">
+<br>
+<span>手机</span>
+<input type="text" id="input">		
+<br>
+<button id="validate">提交</button>
+	<script>
+		var btn=document.getElementById('validate');
+		btn.onclick=function(){
+			var input=document.getElementById('input'),
+			    span=document.getElementById('explain'),
+			    text=input.value;
+			    input.removeAttribute("class");
+			if(input.value==''){				
+				input.setAttribute("class","num_null");
+				span.innerHTML="姓名不能为空";
+			}else{
+					var j=0,char;
+				for(var i=0;i<text.length;i++){
+					if(text[i].codePointAt(0)>0xFFFF){
+					j=j+2;
+					}else{
+						char=text[i].charCodeAt(0);
+						if(char<=0xFF){
+							j++;
+						}else{
+							j=j+2;
+						}
+					}					
+				}
+				if(j>3&&j<17){
+					span.innerHTML="名称格式正确";
+					input.setAttribute("class","num_true");
+				}else{
+					input.setAttribute("class","num_null");
+					span.innerHTML="输入长度需要4~16个字符";
+				}
+			}
+		}
+	</script>
+</body>
+</html>
