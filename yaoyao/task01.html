@@ -17,6 +17,9 @@
 		.num_null{
 			border:1px red solid;
 		}
+		.num_true{
+			border:1px green solid;
+		}
 		button{
 			border-radius: 5px;
 			border: 1px #ccc solid;
@@ -42,7 +45,8 @@
 			var input=document.getElementById('input'),
 			    span=document.getElementById('explain'),
 			    text=input.value;
-			if(input.value==''){
+			    input.removeAttribute("class");
+			if(input.value==''){				
 				input.setAttribute("class","num_null");
 				span.innerHTML="姓名不能为空";
 			}else{
@@ -51,15 +55,21 @@
 					if(text[i].codePointAt(0)>0xFFFF){
 					j=j+2;
 					}else{
-						text[i].String.charCodeAt(0);
+						char=text[i].charCodeAt(0);
 						if(char<=0xFF){
-						j++;
+							j++;
 						}else{
 							j=j+2;
 						}
 					}					
 				}
-				console.log(j);
+				if(j>3&&j<17){
+					span.innerHTML="名称格式正确";
+					input.setAttribute("class","num_true");
+				}else{
+					input.setAttribute("class","num_null");
+					span.innerHTML="输入长度需要4~16个字符";
+				}
 			}
 		}
 	</script>
