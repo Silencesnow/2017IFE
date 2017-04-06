@@ -116,6 +116,7 @@ function backIt(tree,ar){
 // 展示动画
 function show(ar,n){	
 	var i=0;
+	// 根据参数个数决定是查找还是简单遍历
 	var k=arguments.length;
 	timer=setInterval(function(){
 		if(i<ar.length){
@@ -132,22 +133,6 @@ function show(ar,n){
 		ar[i-1].style.backgroundColor="white";
 		clearInterval(timer)};
 	},500);		
-}
-function show_s(ar,n){
-	var i=0;
-	timer=setInterval(function(){
-		if(i<ar.length){											
-			if(i>0){
-				ar[i].style.backgroundColor="blue";
-				
-				ar[i-1].style.backgroundColor="white";
-			}				
-				i++;						
-		}else {
-		ar[i-1].style.backgroundColor="white";
-		clearInterval(timer);
-		alert("没找到匹配结果")};
-	},500);	
 }
 var btn_f=document.getElementById("front"),
     btn_b=document.getElementById("back"),
@@ -173,8 +158,6 @@ btn_bs.onclick=function(){
 	show(ar,input);
 
 }
-// 查找数组并显示结果
-
 </script>	
 </body>
 </html>
