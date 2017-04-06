@@ -114,21 +114,41 @@ function backIt(tree,ar){
 	return ar;	
 }
 // 展示动画
-function show(ar){	
+function show(ar,n){	
 	var i=0;
+	var k=arguments.length;
 	timer=setInterval(function(){
 		if(i<ar.length){
 			if(i>0){
+				ar[i].style.backgroundColor="blue";			
+				if((k==2)&&(ar[i].firstChild.data.indexOf(n)>-1)){
+					ar[i].style.backgroundColor="red";
+					clearInterval(timer);											
+				}			
 				ar[i-1].style.backgroundColor="white";
-			}
-			ar[i].style.backgroundColor="blue";			
+			}						
 			i++;		
 		}else {
 		ar[i-1].style.backgroundColor="white";
 		clearInterval(timer)};
 	},500);		
 }
-
+function show_s(ar,n){
+	var i=0;
+	timer=setInterval(function(){
+		if(i<ar.length){											
+			if(i>0){
+				ar[i].style.backgroundColor="blue";
+				
+				ar[i-1].style.backgroundColor="white";
+			}				
+				i++;						
+		}else {
+		ar[i-1].style.backgroundColor="white";
+		clearInterval(timer);
+		alert("没找到匹配结果")};
+	},500);	
+}
 var btn_f=document.getElementById("front"),
     btn_b=document.getElementById("back"),
     btn_fs=document.getElementById("btn_frontsearch");
@@ -144,35 +164,17 @@ btn_b.onclick=function(){
 btn_fs.onclick=function(){
 	var input=document.getElementById('search').value;
 	let ar=frontIt(div_pa,[]);
-	show_s(ar,input);
+	show(ar,input);
 
 }
 btn_bs.onclick=function(){
 	var input=document.getElementById('search').value;
 	let ar=backIt(div_pa,[]);
-	show_s(ar,input);
+	show(ar,input);
 
 }
 // 查找数组并显示结果
-function show_s(ar,n){
-	var i=0;
-	timer=setInterval(function(){
-		if(i<ar.length){											
-			if(i>0){
-				ar[i].style.backgroundColor="blue";
-				if(ar[i].firstChild.data.indexOf(n)>-1){
-					ar[i].style.backgroundColor="red";
-					clearInterval(timer);											
-				}
-				ar[i-1].style.backgroundColor="white";
-			}				
-				i++;						
-		}else {
-		ar[i-1].style.backgroundColor="white";
-		clearInterval(timer);
-		alert("没找到匹配结果")};
-	},500);	
-}
+
 </script>	
 </body>
 </html>
