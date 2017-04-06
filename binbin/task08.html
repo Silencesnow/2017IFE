@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task08</title>
+	<style>
+	div{
+		border: 1px black solid;
+		display: flex;		
+		min-height: 80px;
+		margin:5px;
+		background-color: white;
+	}
+	.show{
+		animation: mymove 3s infinite;
+		-webkit-animation: mymove 3s;
+
+	}
+	@keyframes mymove{
+		from{  }
+		to{ background-color: blue;  }
+	}
+	</style>
+	
+</head>
+<body>
+<button id="front">前序遍历</button>
+<button id="back">后序遍历</button>
+<button id="init">随机生成一棵4度多叉树</button>
+<input type="text" id="search">
+<button id="btn_frontsearch">前序查找</button>
+<button id="btn_backsearch">后序查找</button>
+<div id="parents"></div>
+<script>
+// 创建一棵深度为4的随机树
+div_pa=document.getElementById("parents");
+function init(div_pa){
+	var j,div_pa,
+    arr=[];	
+	if(div_pa.childNodes.length!==0){
+		div_pa.innerHTML='';
+	}
+	arr=createTree(div_pa);
+	for(i=0;i<3;i++){
+		arr=generate(arr);
+	}
+	document.body.appendChild(div_pa);
+}
+// 绑定初始化事件
+var btn_init=document.getElementById("init");
+btn_init.onclick=function (){
+	init(div_pa);
+}
+// 给定一个数列依次生成子树并返回对象数列
+function generate(arr){
+	var n=[];
+	for(j=0;j<arr.length;j++){
+		n=n.concat(createTree(arr[j]));		
+	}
+	return n;
+}
+// 根据一棵母树生成随机的子树
+function createTree(parents){
+	var ar=[],char,text,div;
+	var len=num_ran();
+	for(var j=0;j<len;j++){
+		text=document.createTextNode(char_ran());
+		div=document.createElement('div');
+		div.appendChild(text);
+		parents.appendChild(div);
+		ar.push(div);
+	}
+	return ar;
+}
+// 随机生成一个0-4的随机数
+function num_ran(){
+	var num = Math.ceil(Math.random()*3);
+	return num;
+}
+// 随机生成一个四位的字符串
+function char_ran(){
+	var chars='abcdefghijklmnopqrstuvwxyz';
+	var char='';
+	for(var i=0;i<4;i++){
+		char+=chars.charAt(Math.floor(Math.random()*26));
+	}
+	return char;
+}
+
+
+// 前序遍历函数
+function frontIt(tree,ar){
+	let i;	
+	if(tree!==null){
+		ar.push(tree);
+		for(let i=0;i<tree.childNodes.length;i++){
+			if(tree.childNodes[i].nodeType==1){
+	    	frontIt(tree.childNodes[i],ar);	 
+	    	}   
+	    }
+	}
+	return ar;	
+}
+// 后序遍历函数
+function backIt(tree,ar){	
+	if(tree!==null){
+		for(let i=0;i<tree.childNodes.length;i++){
+			if(tree.childNodes[i].nodeType==1){
+	    	backIt(tree.childNodes[i],ar);	 
+	    	}   
+	    }	    
+	    ar.push(tree);
+	}
+	return ar;	
+}
+// 展示动画
+function show(ar){	
+	var i=0;
+	timer=setInterval(function(){
+		if(i<ar.length){
+			if(i>0){
+				ar[i-1].style.backgroundColor="white";
+			}
+			ar[i].style.backgroundColor="blue";			
+			i++;		
+		}else {
+		ar[i-1].style.backgroundColor="white";
+		clearInterval(timer)};
+	},500);		
+}
+
+var btn_f=document.getElementById("front"),
+    btn_b=document.getElementById("back"),
+    btn_fs=document.getElementById("btn_frontsearch");
+    btn_bs=document.getElementById("btn_backsearch");
+btn_f.onclick=function(){
+	let ar=frontIt(div_pa,[]);
+	show(ar);
+}
+btn_b.onclick=function(){
+	let ar=backIt(div_pa,[]);
+	show(ar);
+}
+btn_fs.onclick=function(){
+	var input=document.getElementById('search').value;
+	let ar=frontIt(div_pa,[]);
+	show_s(ar,input);
+
+}
+btn_bs.onclick=function(){
+	var input=document.getElementById('search').value;
+	let ar=backIt(div_pa,[]);
+	show_s(ar,input);
+
+}
+// 查找数组并显示结果
+function show_s(ar,n){
+	var i=0;
+	timer=setInterval(function(){
+		if(i<ar.length){											
+			if(i>0){
+				ar[i].style.backgroundColor="blue";
+				if(ar[i].firstChild.data.indexOf(n)>-1){
+					ar[i].style.backgroundColor="red";
+					clearInterval(timer);											
+				}
+				ar[i-1].style.backgroundColor="white";
+			}				
+				i++;						
+		}else {
+		ar[i-1].style.backgroundColor="white";
+		clearInterval(timer);
+		alert("没找到匹配结果")};
+	},500);	
+}
+</script>	
+</body>
+</html>
