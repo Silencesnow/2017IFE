@@ -8,11 +8,15 @@
 			margin: 100px auto;
 			text-align: center;									
 		}
+		div{
+			width: 300px;
+			margin:0 auto;
+		}
 		input{
 			border-radius: 5px;
 			border: 1px #ccc solid;
 			height: 30px;
-			margin: 10px;
+			margin: 5px 10px;
 		}
 		span{
 			display: inline-block;
@@ -23,71 +27,242 @@
 			border-radius: 5px;
 			border: 1px #ccc solid;
 			height: 32px;
+			float:right;
+			margin: 15px;
 			background-color: #2f79ba;
 			color: #fff;			
 		}
-		#explain{
+		span.explain,span.num_true,span.num_null{
+			float:right;
 			font-size: 10px;
-			color:#ccc;			
+			margin: 0;			
+			padding-left: 100px;
+			width: 185px;
+			text-align: left;			
 		}
-		.num_null{
+		span.explain{
+			color:#ccc;
+		}
+		span.num_null{
+			color:red;
+		}
+		span.num_true{
+			color:green;
+		}
+		input.num_null{
 			border:1px red solid;
 		}
-		.num_true{
+		span.num_null{
+			color:red;
+		}
+		input.num_true{
 			border:1px green solid;
 		}
+		
 	</style>
 </head>
 <body>
-<span>名称</span>
-<input type="text" id="input">
-<br>
-<span>密码</span>
-<input type="text" id="input">
-<br>
-<span>密码确认</span>
-<input type="text" id="input">
-<br>
-<span>邮箱</span>
-<input type="text" id="input">
-<br>
-<span>手机</span>
-<input type="text" id="input">		
-<br>
-<button id="validate">提交</button>
-	<script>
-		var btn=document.getElementById('validate');
-		btn.onclick=function(){
-			var input=document.getElementById('input'),
-			    span=document.getElementById('explain'),
-			    text=input.value;
-			    input.removeAttribute("class");
-			if(input.value==''){				
-				input.setAttribute("class","num_null");
-				span.innerHTML="姓名不能为空";
-			}else{
-					var j=0,char;
-				for(var i=0;i<text.length;i++){
-					if(text[i].codePointAt(0)>0xFFFF){
-					j=j+2;
-					}else{
-						char=text[i].charCodeAt(0);
-						if(char<=0xFF){
-							j++;
-						}else{
-							j=j+2;
-						}
-					}					
-				}
-				if(j>3&&j<17){
-					span.innerHTML="名称格式正确";
-					input.setAttribute("class","num_true");
-				}else{
-					input.setAttribute("class","num_null");
-					span.innerHTML="输入长度需要4~16个字符";
-				}
-			}
+<div>
+	<span>名称</span><input type="text" id="name">
+	<br>
+	<span>密码</span><input type="text" id="password">
+	<br>
+	<span>密码确认</span><input type="text" id="password_t">
+	<br>
+	<span>邮箱</span><input type="text" id="email">
+	<br>
+	<span>手机</span><input type="text" id="telphone">		
+	<br>
+	<button id="validate">提交</button>
+</div>
+<script>
+var lis=document.getElementsByTagName('input'),
+	sub=document.getElementById('validate'),
+	val=[];
+for(let j=0;j<lis.length;j++){
+	lis[j].onfocus=function(){
+		input_remind(lis,j);
+	}
+	lis[j].onblur=function(){
+		if(lis[j].value==0){
+		input_null(lis,j);
 		}
-	</script>
+	}
+	lis[j].onchange=function(){
+		input_validate(lis,j);		
+	}
+}
+sub.onclick=function(){
+	var i=0;
+	for(i=0;i<val.length;i++){
+		if(!val[i]){
+			console.log(1);
+			break;
+		}
+	}
+	if(i==5)alert('提交成功');
+	
+}
+// 输入提示
+function input_remind(ins,i){
+	var span=document.createElement('span');			
+		span.setAttribute('class','explain');
+	if(ins[i].nextSibling.nodeName=='#text'){
+		ins[i].parentNode.insertBefore(span,ins[i].nextSibling);
+		switch (i){
+			case 0:span.innerHTML='必填，长度为4~16个字符';
+				   break;
+			case 1:span.innerHTML='不少于6位的数字字母组合';
+			       break;
+			case 2:span.innerHTML='再次输入相同密码';
+			       break;
+			case 3:span.innerHTML='请输入邮箱';
+			       break;
+			case 4:span.innerHTML='请输入11位手机号';
+			       break;
+			default:alert("意外错误");
+		}
+	}
+}
+function input_null(ins,i){
+	ins[i].setAttribute("class","num_null");
+	let span=ins[i].nextSibling;
+	span.setAttribute("class","num_null");
+	switch(i){
+		case 0:span.innerHTML='姓名不能为空';
+			   break;
+		case 1:span.innerHTML='密码不能为空';
+		       break;
+		case 2:span.innerHTML='再次输入不能为空';
+		       break;
+		case 3:span.innerHTML='邮箱不能为空';
+		       break;
+		case 4:span.innerHTML='手机号不能为空';
+		       break;
+		default:alert("意外错误");
+	}
+}
+// 输入验证
+function input_validate(ins,i){
+	var span=ins[i].nextSibling;
+	switch(i){
+		case 0:val[0]=name_val(ins[i],span);
+			   break;
+		case 1:val[1]=password_val(ins[i],span);
+		       break;
+		case 2:val[2]=password_re(ins[i],span);
+		       break;
+		case 3:val[3]=email_val(ins[i],span);
+		       break;
+		case 4:val[4]=tel_val(ins[i],span);
+		       break;
+		default:alert("意外错误");
+	}
+}
+// 名称验证
+function name_val(input,span){
+	let text=input.value;		
+	var len=text_val(text);
+	if(len>3&&len<17){
+		span.innerHTML="名称格式正确";
+		span.setAttribute("class","num_true");
+		input.setAttribute("class","num_true");
+		return 1;
+	}else{
+		input.setAttribute("class","num_null");
+		span.setAttribute("class","num_null");
+		span.innerHTML="输入长度需要4~16个字符";
+		return ;
+	}	
+}
+// 密码验证
+function password_val(input,span){
+	let text=input.value;
+	var re=/^[0-9a-zA-Z]*$/g;
+	if(!re.test(text)){
+		input.setAttribute("class","num_null");
+		span.setAttribute("class","num_null");
+		span.innerHTML="需要为字母与数字的组合";
+		return ;	
+	}else{
+		if(text.length<6){
+			input.setAttribute("class","num_null");
+			span.setAttribute("class","num_null");
+			span.innerHTML="密码不少于6位";	
+			return ;
+		}			
+		else{
+			span.innerHTML="密码可用";
+			span.setAttribute("class","num_true");
+			input.setAttribute("class","num_true");
+			return 1;
+		}
+	}			
+}
+// 密码再次验证
+function password_re(input,span){
+	let text_re=input.value,
+		text=document.getElementById('password').value;
+	if(text==text_re){
+		span.innerHTML="密码输入一致";
+		span.setAttribute("class","num_true");
+		input.setAttribute("class","num_true");
+		return 1;
+	}else{
+		input.setAttribute("class","num_null");
+		span.setAttribute("class","num_null");
+		span.innerHTML="密码输入不一致";
+		return ;
+	}
+}
+// 邮箱验证
+function email_val(input,span){
+	let text=input.value;	
+	var reg=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+	if(!reg.test(text)){
+		input.setAttribute("class","num_null");
+		span.setAttribute("class","num_null");
+		span.innerHTML="邮箱格式错误";
+		return ;
+	}else{
+		span.innerHTML="邮箱可用";
+		span.setAttribute("class","num_true");
+		input.setAttribute("class","num_true");
+		return 1;
+	}	
+}
+function tel_val(input,span){
+	let text=input.value;
+	var r=/^1[0-9]\d{9}$/;
+	if(!r.test(text)){
+		input.setAttribute("class","num_null");
+		span.setAttribute("class","num_null");
+		span.innerHTML="手机格式错误";
+		return ;
+	}else{
+		span.innerHTML="手机格式正确";
+		span.setAttribute("class","num_true");
+		input.setAttribute("class","num_true");
+		return 1;
+	}
+
+}
+function text_val(char){
+	var c,j=0;
+	for(var i=0;i<char.length;i++){
+		if(char[i].codePointAt(0)>0xFFFF){
+			j=j+2;
+		}else{
+			c=char[i].charCodeAt(0);
+			if(c<=0xFF){
+				j++;
+			}else{
+				j=j+2;
+			}
+		}					
+	}
+	return j;
+}	
+</script>
 </body>
 </html>
