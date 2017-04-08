@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task-03</title>
+	<style>
+		body{
+			text-align: center;
+			font-size: 20px;
+			line-height: 50px;
+			margin: 30px auto;
+		}
+		input{
+			appearance:none;
+			-webkit-appearance:none;
+			-moz-appearance:none;
+			margin:0;
+			height: 37px;
+			border-radius: 5px;
+			border:1px #cdcdcd solid;
+			font-size: 20px;
+		}
+		input[name="identify"]{
+			-webkit-appearance:none;			
+			height: 20px;
+			line-height: 20px;
+			width: 20px;
+			border-radius: 10px;			
+			outline:none;
+			vertical-align:-3px;			
+		}
+		input[name="identify"]:checked{
+			border:7px solid #3098fc;
+			border-radius: 10px;
+		}
+		select{
+			border-radius: 5px;
+			height: 40px;
+			border:1px #cdcdcd solid;
+			padding: 0 40px;
+			font-size: 20px;
+		}
+		label{
+			font-weight: 900;
+			font-size: 16px;
+		}
+	</style>
+</head>
+<body>
+
+<input type="radio" name="identify" id="student" checked='checked'>在校生
+<input type="radio" name="identify" id="notstudent">非在校生
+<br>
+<form action="" id="school">
+<label for="city">学校</label>
+<select name="city" id="city">
+	<option value="北京">北京</option>
+	<option value="上海">上海</option>
+	<option value="杭州">杭州</option>
+</select>
+<select name="school" id="beijing">
+	<option value="pku">北京大学</option>
+	<option value="tu">清华大学</option>
+	<option value="ruc">人民大学</option>
+</select>
+<select name="school" id="shanghai">
+	<option value="sjtu">上海交通大学</option>
+	<option value="fu">复旦大学</option>
+</select>
+<select name="school" id="hangzhou">
+	<option value="zju">浙江大学</option>
+</select>
+</form>
+<form action="" id="company">
+<label for="company">就业单位</label>
+<input type="text">
+</form>
+<script>
+var st=document.getElementById('student'),
+ 	notst=document.getElementById('notstudent'),
+ 	school=document.getElementById('school'),
+ 	company=document.getElementById('company');
+ 	city=document.getElementById('city');
+ 	beijing=document.getElementById('beijing');
+ 	shanghai=document.getElementById('shanghai');
+ 	hangzhou=document.getElementById('hangzhou');
+ // 初始化
+show(company,school);
+show(beijing,shanghai,hangzhou);
+st.onchange=function(){
+	show(company,school);
+}
+notst.onchange=function(){	
+	show(school,company);
+}
+city.onchange=function(){
+	if(city.value=="北京") show(beijing,shanghai,hangzhou);
+	if(city.value=="上海") show(shanghai,beijing,hangzhou);
+	if(city.value=="杭州") show(hangzhou,shanghai,beijing);
+}
+// 复用函数，加一个参数数量的判断
+function show(a,b,c){
+	if(arguments.length==2){
+	a.style.display="none";
+	b.style.display="";
+}else if(arguments.length==3){
+	a.style.display="";
+	b.style.display="none";
+	c.style.display="none";
+}
+}
+</script>	
+</body>
+</html>
