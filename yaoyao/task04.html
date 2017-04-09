@@ -5,10 +5,18 @@
 	<title>task-04</title>
 	<style>
 		div#panel{
-			width: 440px;
-			height: 480px;
+			width: 480px;
+			height: 520px;
 			border:1px solid black;
 			margin: 100px auto;
+		}
+		table{
+				border-collapse: collapse;		
+		}
+		tr td{
+			width: 40px;
+			height: 40px;
+			border:1px solid black;
 		}
 	</style>
 </head>
@@ -16,5 +24,34 @@
 <div id="panel">
 	
 </div>
+<script>
+	function init(div,n){
+		var table=document.createElement('table'),
+			tr,td;
+		for(let i=0;i<n+1;i++){
+			if(i==0){
+				tr_l=document.createElement('tr');
+				table.appendChild(tr_l);
+			}
+						
+			tr=document.createElement('tr');			
+			
+			table.appendChild(tr);
+			for(let j=0;j<n+1;j++){
+				if(i==0){				
+				td=document.createElement('td');
+				td.innerHTML=j+1;
+				tr_l.appendChild(td);
+				}
+				td=document.createElement('td');
+				td.innerHTML='&nbsp'
+				tr.appendChild(td);
+			}
+		}
+		div.appendChild(table);
+	}
+	var div=document.getElementById('panel');
+	init(div,10);
+</script>
 </body>
 </html>
