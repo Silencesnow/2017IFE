@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task-05</title>
+	<style>
+		div#panel{
+			width: 480px;
+			height: 520px;
+			border:1px solid black;
+			position: absolute;
+			top:100px;
+			left:100px;
+		}
+		table{
+				border-collapse: collapse;		
+		}
+		tr td{
+			width: 40px;
+			height: 40px;
+			border:1px solid black;
+		}
+		input{
+			margin: 20px;
+		}
+		div#move_b{
+			position: absolute;
+			top:24px;
+			left:24px;
+			width: 40px;
+			height: 30px;
+			border-top:10px solid blue;
+			background-color: red;
+			transition: transform 1s;
+		}
+		div#move_b.adjust{
+			transition:transform 0s;
+		}	
+	</style>
+</head>
+<body>
+<div id="panel">	
+</div>
+<script>
+// 表格初始化
+	function init(div,n){
+		var table=document.createElement('table'),
+			th,tr,td;
+		for(let i=0;i<n+1;i++){
+			if(i==0){
+				tr_l=document.createElement('tr');
+				table.appendChild(tr_l);
+			}						
+			tr=document.createElement('tr');						
+			table.appendChild(tr);
+			for(let j=0;j<n+1;j++){
+				if(i==0){				
+				th=document.createElement('th');
+				if(j==0){
+					th.innerHTML='&nbsp';
+				}else th.innerHTML=j;
+				tr_l.appendChild(th);
+				}else{					
+					if(j==0){
+					td=document.createElement('th');
+					td.innerHTML=i;
+					}else{	
+					td=document.createElement('td');				
+					td.innerHTML='&nbsp';
+					}
+					tr.appendChild(td);
+				}				
+			}
+		}
+		div.appendChild(table);
+	}
+// 输入框初始化
+var div=document.getElementById('panel'),
+    input=document.createElement('input'),
+    button=document.createElement('button');
+button.innerHTML='执行';
+init(div,10);
+div.appendChild(input);
+div.appendChild(button);
+var move_b=document.createElement('div');
+move_b.setAttribute('id','move_b');
+div.appendChild(move_b);
+var num=0;
+button.onclick=function(){
+	move(input.value);
+}	
+function move(n){
+	n=n.toLowerCase();		
+	switch(n){
+		case "go":move_go();
+		break;
+		case "tun lef":num=num-90;ro(num);
+		break;
+		case "tun rig":num=num+90;ro(num);
+		break;
+		case "tun bac":num=num+180;ro(num);
+		break;
+		case "tra top":move_go(0);
+		break;
+		case "tra rig":move_go(90);
+		break;
+		case "tra bot":move_go(180);
+		break;
+		case "tra lef":move_go(270);
+		break;
+		case "mov top":ro(0);
+					   move_go(0);
+		break;
+		case "mov rig":ro(90);
+					   move_go(90);
+		break;
+		case "mov bot":ro(180);
+					   move_go(180);
+		break;
+		case "mov lef":ro(270);
+					   move_go(270);
+		break;
+	}
+}
+function ro(i){	
+	move_b.style.transform='rotate('+i+'deg)';
+}
+function move_go(i){
+	let top=move_b.offsetTop,
+	    left=move_b.offsetLeft,
+	    k;
+	    if((i==0)||i){
+	    	k=i/90;
+	    }else{k=(num/90)%4;}
+	    console.log(k);
+	switch (k){
+		case 0:top=='24'?alert('到达边界了'):top-=43;
+		break;
+		case 1:
+		case -3:left=='411'?alert('到达边界了'):left+=43;
+		break;
+		case 2:
+		case -2:top=='411'?alert('到达边界了'):top+=43;
+		break;
+		case 3:
+		case -1:left=='24'?alert('到达边界了'):left-=43;
+		break; 
+	}
+	setTimeout(function(){move_b.style.top=top+'px';
+	move_b.style.left=left+'px'},1000);
+}
+</script>
+</body>
+</html>
