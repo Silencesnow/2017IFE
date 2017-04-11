@@ -5,17 +5,36 @@
 	<title>task-06</title>
 	<style>
 		#ui_wrapper{
-		position: absolute;
+		position: fixed;
 		top:0;
 		left:0;
 		width: 100%;
+		height: 100%;
 		background-color: rgba(1,1,1,.4);
 		z-index:9999;
-		overflow: hidden;
 		}
 
 		#ui_layer{
-
+		position: fixed;
+		top:300px;
+		width: 300px;
+		height:200px;
+		background-color: #b78d78;
+		z-index: 10000;
+		}
+		button{
+			top:0;
+			position:fixed;
+			z-index:10001;
+		}
+		#show{
+			left:0;
+		}
+		#hide{
+			left:50px;
+		}
+		#btn_init{
+			left:100px;
 		}
 	</style>
 </head>
@@ -111,17 +130,50 @@
 </form>
 </nav>
 <div id="ui_wrapper">
-	<div id="ui_layer"></div>
+	<div id="ui_layer" draggable="true"></div>
 </div>
+<button id="show">显示</button>
+<button id="hide">隐藏</button>
+<button id="btn_init">初始化</button>
+
+
 <script>
 var wrapper=document.getElementById('ui_wrapper'),
     layer=document.getElementById('ui_layer');
-var height=document.documentElement.clientHeight;
-console.log(height);
-wrapper.style.height=height+'px';
-function getScrollTop(){
-	var scrollTop=0;
-	
+// 绑定点击事件
+wrapper.onclick=function(){
+	ui_hide();
+}
+// 阻止子元素上的事件
+layer.onclick=function(e){
+	e.stopPropagation();
+}
+var show=document.getElementById('show'),
+    hide=document.getElementById('hide');
+    b_init=document.getElementById('btn_init');
+init();
+show.onclick=function(){
+	ui_show();
+}
+hide.onclick=function(){
+	ui_hide();
+}
+b_init.onclick=function(){
+	init();
+}
+function ui_show(){
+	layer.style.display="";
+	wrapper.style.display="";
+}
+function ui_hide(){
+	layer.style.display="none";
+	wrapper.style.display="none";
+}
+function init(){
+	var wid=layer.offsetWidth,hei=layer.offsetHeight,
+        p_wid=wrapper.offsetWidth,p_hei=wrapper.offsetHeight;
+	layer.style.left=(p_wid-wid)/2+'px';
+	layer.style.top=(p_hei-hei)/2+'px';
 }
 </script>
 </body>
